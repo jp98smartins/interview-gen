@@ -39,6 +39,7 @@ dependencies:
   flutter_svg: ^2.0.9
   micro_core_result: ^0.2.2
   micro_core_store: ^0.1.0
+  collection: ^1.18.0
 
 dev_dependencies:
   flutter_test:
