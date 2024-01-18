@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:marvel/app/core/adapters/app_dependencies.dart';
+import 'package:marvel/app/core/components/route_not_found_page.dart';
 import 'package:marvel/app/core/routes/app_routes.dart';
 import 'package:marvel/app/core/theme/app_theme.dart';
 import 'package:marvel/app/modules/list_movies/domain/entities/movie_entity.dart';
@@ -51,7 +52,9 @@ class MarvelStudios extends StatelessWidget {
               ),
             ),
           _ => MaterialPageRoute(
-              builder: (context) => Container(),
+              builder: (context) => RouteNotFoundPage(
+                route: settings.name ?? '',
+              ),
             ),
         };
       },
