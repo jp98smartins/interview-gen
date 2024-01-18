@@ -14,6 +14,7 @@ final class SuccessComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       key: const Key('ListMoviesPage#SuccessBody'),
+      padding: const EdgeInsets.only(bottom: 24),
       itemCount: moviesList.movies.length,
       itemBuilder: (context, index) {
         final movie = moviesList.movies[index];

@@ -1,4 +1,4 @@
-extension ListString on List<String> {
+extension ListExtension on List<String> {
   String get items {
     var value = '';
 

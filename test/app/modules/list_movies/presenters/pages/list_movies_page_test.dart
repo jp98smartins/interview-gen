@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:marvel/app/modules/list_movies/data/mappers/movies_list_mapper.dart';
@@ -9,6 +8,7 @@ import 'package:marvel/app/modules/list_movies/presenters/states/list_movies_sta
 import 'package:marvel/app/modules/list_movies/presenters/store/list_movies_store.dart';
 import 'package:micro_core_result/micro_core_result.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:network_image_mock/network_image_mock.dart';
 
 final class MockListMoviesUsecase extends Mock implements IListMoviesUsecase {}
 
@@ -73,87 +73,111 @@ void main() {
       testWidgets(
         'Should find the Widgets correctly while the usecase is getting the result',
         (tester) async {
-          // Arrange
-          when(() => usecase()).thenAnswer(
-            (_) async {
-              await Future.delayed(const Duration(milliseconds: 100));
-              return Right(
-                MoviesListMapper.fromMap(ListMoviesMock.filledList),
+          await mockNetworkImagesFor(
+            () async {
+              // Arrange
+              when(() => usecase()).thenAnswer(
+                (_) async {
+                  await Future.delayed(const Duration(seconds: 10));
+                  return Right(
+                    MoviesListMapper.fromMap(ListMoviesMock.filledList),
+                  );
+                },
               );
+              final store = ListMoviesStore(usecase);
+
+              // Act
+              await tester.pumpWidget(
+                MaterialApp(
+                  home: ListMoviesPage(listMoviesStore: store),
+                ),
+              );
+
+              // Assert
+              expect(store.state, isA<LoadingListMoviesState>());
+              expect(find.byKey(pageKey), findsOneWidget);
+              expect(find.byKey(appBarKey), findsOneWidget);
+              expect(find.byKey(appBarTitleKey), findsOneWidget);
+              expect(find.byKey(loadingBodyKey), findsOneWidget);
+
+              // Act
+              await tester.pump(const Duration(seconds: 10));
+
+              // Assert
+              expect(store.state, isA<SuccessListMoviesState>());
+
+              // Act
+              await tester.pump(const Duration(seconds: 10));
             },
           );
-          final store = ListMoviesStore(usecase);
-
-          // Act
-          await tester.pumpWidget(
-            MaterialApp(
-              home: ListMoviesPage(listMoviesStore: store),
-            ),
-          );
-
-          // Assert
-          expect(store.state, isA<LoadingListMoviesState>());
-          expect(find.byKey(pageKey), findsOneWidget);
-          expect(find.byKey(appBarKey), findsOneWidget);
-          expect(find.byKey(appBarTitleKey), findsOneWidget);
-          expect(find.byKey(loadingBodyKey), findsOneWidget);
-
-          // Act
-          await tester.pumpAndSettle(const Duration(seconds: 10));
         },
       );
 
       testWidgets(
         'Should find the Widgets correctly when the usecase returns a Right',
         (tester) async {
-          // Arrange
-          when(() => usecase()).thenAnswer(
-            (_) async => Right(
-              MoviesListMapper.fromMap(ListMoviesMock.filledList),
-            ),
-          );
-          final store = ListMoviesStore(usecase);
+          await mockNetworkImagesFor(
+            () async {
+              // Arrange
+              when(() => usecase()).thenAnswer(
+                (_) async => Right(
+                  MoviesListMapper.fromMap(ListMoviesMock.filledList),
+                ),
+              );
+              final store = ListMoviesStore(usecase);
 
-          // Act
-          await tester.pumpWidget(
-            MaterialApp(
-              home: ListMoviesPage(listMoviesStore: store),
-            ),
-          );
-          await tester.pumpAndSettle(const Duration(seconds: 10));
+              // Act
+              await tester.pumpWidget(
+                MaterialApp(
+                  home: ListMoviesPage(listMoviesStore: store),
+                ),
+              );
+              await tester.pump(const Duration(seconds: 10));
 
-          // Assert
-          expect(store.state, isA<SuccessListMoviesState>());
-          expect(find.byKey(pageKey), findsOneWidget);
-          expect(find.byKey(appBarKey), findsOneWidget);
-          expect(find.byKey(appBarTitleKey), findsOneWidget);
-          expect(find.byKey(successBodyKey), findsOneWidget);
+              // Assert
+              expect(store.state, isA<SuccessListMoviesState>());
+              expect(find.byKey(pageKey), findsOneWidget);
+              expect(find.byKey(appBarKey), findsOneWidget);
+              expect(find.byKey(appBarTitleKey), findsOneWidget);
+              expect(find.byKey(successBodyKey), findsOneWidget);
+
+              // Act
+              await tester.pump(const Duration(seconds: 10));
+            },
+          );
         },
       );
 
       testWidgets(
         'Should find the Widgets correctly when the usecase returns a Left',
         (tester) async {
-          // Arrange
-          when(() => usecase()).thenAnswer(
-            (_) async => Left(ListMoviesMock.throwMapperException),
-          );
-          final store = ListMoviesStore(usecase);
+          await mockNetworkImagesFor(
+            () async {
+              // Arrange
+              when(() => usecase()).thenAnswer(
+                (_) async => Left(ListMoviesMock.throwMapperException),
+              );
+              final store = ListMoviesStore(usecase);
 
-          // Act
-          await tester.pumpWidget(
-            MaterialApp(
-              home: ListMoviesPage(listMoviesStore: store),
-            ),
-          );
-          await tester.pumpAndSettle(const Duration(seconds: 10));
+              // Act
+              await tester.pumpWidget(
+                MaterialApp(
+                  home: ListMoviesPage(listMoviesStore: store),
+                ),
+              );
+              await tester.pump(const Duration(seconds: 10));
 
-          // Assert
-          expect(store.state, isA<ExceptionListMoviesState>());
-          expect(find.byKey(pageKey), findsOneWidget);
-          expect(find.byKey(appBarKey), findsOneWidget);
-          expect(find.byKey(appBarTitleKey), findsOneWidget);
-          expect(find.byKey(exceptionBodyKey), findsOneWidget);
+              // Assert
+              expect(store.state, isA<ExceptionListMoviesState>());
+              expect(find.byKey(pageKey), findsOneWidget);
+              expect(find.byKey(appBarKey), findsOneWidget);
+              expect(find.byKey(appBarTitleKey), findsOneWidget);
+              expect(find.byKey(exceptionBodyKey), findsOneWidget);
+
+              // Act
+              await tester.pump(const Duration(seconds: 10));
+            },
+          );
         },
       );
     },

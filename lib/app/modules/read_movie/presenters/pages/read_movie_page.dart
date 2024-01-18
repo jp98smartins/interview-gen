@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:marvel/app/core/adapters/app_svg.dart';
 import 'package:marvel/app/core/components/movie_poster_component.dart';
-import 'package:marvel/app/core/extensions/date_time_extensions.dart';
+import 'package:marvel/app/core/extensions/date_time_extension.dart';
 import 'package:marvel/app/core/theme/app_colors.dart';
 import 'package:marvel/app/core/theme/app_fonts.dart';
 import 'package:marvel/app/core/theme/app_icons.dart';
@@ -21,9 +21,9 @@ final class ReadMoviePage extends StatelessWidget {
     final posterHeight = posterWidth * 3 / 2;
 
     return Scaffold(
-      key: const Key('ListMoviesPage'),
+      key: const Key('ReadMoviePage'),
       appBar: AppBar(
-        key: const Key('ListMoviesPage#AppBar'),
+        key: const Key('ReadMoviePage#AppBar'),
         leadingWidth: 64,
         leading: Padding(
           padding: const EdgeInsets.only(left: 8.0),
@@ -38,7 +38,7 @@ final class ReadMoviePage extends StatelessWidget {
           transitionOnUserGestures: true,
           child: AppSvg.asset(
             AppIcons.logo,
-            key: const Key('ListMoviesPage#AppBar#Title'),
+            key: const Key('ReadMoviePage#AppBar#Title'),
             height: 35,
           ),
         ),
@@ -51,6 +51,7 @@ final class ReadMoviePage extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: MoviePosterComponent(
+                  key: const Key('ReadMoviePage#Poster'),
                   height: posterHeight,
                   path: movie.poster,
                   width: posterWidth,
@@ -62,6 +63,7 @@ final class ReadMoviePage extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Text(
                 movie.title,
+                key: const Key('ReadMoviePage#Title'),
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   color: AppColors.onBackground,
@@ -73,6 +75,7 @@ final class ReadMoviePage extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             RichText(
+              key: const Key('ReadMoviePage#Score'),
               text: TextSpan(
                 children: [
                   TextSpan(
@@ -100,6 +103,7 @@ final class ReadMoviePage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: DecoratedBox(
+                key: const Key('ReadMoviePage#Genres'),
                 decoration: BoxDecoration(
                   color: AppColors.primary,
                   borderRadius: BorderRadius.circular(12),
@@ -139,6 +143,7 @@ final class ReadMoviePage extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   'Sinopse',
+                  key: Key('ReadMoviePage#Sinopse'),
                   style: TextStyle(
                     color: AppColors.secondary,
                     fontFamily: AppFonts.primary,
@@ -153,6 +158,7 @@ final class ReadMoviePage extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Text(
                 movie.overview,
+                key: const Key('ReadMoviePage#Overview'),
                 style: const TextStyle(
                   color: AppColors.onPrimary,
                   fontFamily: AppFonts.primary,
@@ -168,6 +174,7 @@ final class ReadMoviePage extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   movie.releaseDate.toStringDate(),
+                  key: const Key('ReadMoviePage#ReleaseDate'),
                   style: TextStyle(
                     color: AppColors.secondary.withOpacity(0.9),
                     fontFamily: AppFonts.primary,

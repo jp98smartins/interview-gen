@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:marvel/app/core/extensions/list_extensions.dart';
+import 'package:marvel/app/core/extensions/list_extension.dart';
 
 void main() {
   group(

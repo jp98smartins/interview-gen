@@ -1,7 +1,8 @@
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter/material.dart';
 import 'package:marvel/app/core/components/movie_poster_component.dart';
-import 'package:marvel/app/core/extensions/list_extensions.dart';
+import 'package:marvel/app/core/extensions/key_entension.dart';
+import 'package:marvel/app/core/extensions/list_extension.dart';
 import 'package:marvel/app/core/routes/app_routes.dart';
 import 'package:marvel/app/core/theme/app_colors.dart';
 import 'package:marvel/app/core/theme/app_fonts.dart';
@@ -29,8 +30,14 @@ final class MovieCardComponent extends StatelessWidget {
     final posterWidth = MediaQuery.sizeOf(context).width - 48;
     final posterHeight = posterWidth * 3 / 2;
     return Padding(
+      key: key != null
+          ? Key('${key.value}#MovieCardComponent')
+          : const Key('MovieCardComponent'),
       padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
       child: InkWell(
+        key: key != null
+            ? Key('${key.value}#MovieCardComponent#InkWell')
+            : const Key('MovieCardComponent#InkWell'),
         onTap: () => Navigator.pushNamed(
           context,
           AppRoutes.readMovie,
@@ -39,20 +46,29 @@ final class MovieCardComponent extends StatelessWidget {
         child: Stack(
           children: [
             Card(
-              key: const Key('ListMoviesPage#SuccessBody#MovieCard'),
+              key: key != null
+                  ? Key('${key.value}#MovieCardComponent#Card')
+                  : const Key('MovieCardComponent#Card'),
               color: AppColors.primary,
               elevation: 0,
               margin: EdgeInsets.zero,
               clipBehavior: Clip.hardEdge,
               child: MoviePosterComponent(
+                key: key != null
+                    ? Key('${key.value}#MovieCardComponent#Card#Poster')
+                    : const Key('MovieCardComponent#Card#Poster'),
                 height: posterHeight,
                 path: movie.poster,
                 width: posterWidth,
-              ),
+              ).animate().fadeIn(
+                    duration: const Duration(seconds: 1),
+                  ),
             ),
             if (movie.genres.isNotEmpty)
               Positioned(
-                key: const Key('ListMoviesPage#SuccessBody#MovieCard#Genres'),
+                key: key != null
+                    ? Key('${key.value}#MovieCardComponent#Card#Genres')
+                    : const Key('MovieCardComponent#Card#Genres'),
                 bottom: 0,
                 left: 0,
                 right: 0,

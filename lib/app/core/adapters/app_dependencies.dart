@@ -7,6 +7,9 @@ import 'package:marvel/app/modules/list_movies/domain/usecases/interfaces/list_m
 import 'package:marvel/app/modules/list_movies/domain/usecases/list_movies_usecase.dart';
 import 'package:marvel/app/modules/list_movies/presenters/store/list_movies_store.dart';
 
+/// This class is a wrapper to handle the dependency injection.
+///
+/// This is a wrapper of [`get_it`](https://pub.dev/packages/get_it) library.
 final class AppDependencies {
   static final _i = GetIt.instance;
 
