@@ -37,6 +37,8 @@ final class ListMoviesDatasource implements IListMoviesDatasource {
     //   );
     // }
 
+    await Future.delayed(const Duration(seconds: 3));
+
     // // 2 - Cenário de Sucesso (Lista Vazia)
     // return MoviesListMapper.fromMap(
     //   ListMoviesMock.emptyList,

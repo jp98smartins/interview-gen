@@ -5,6 +5,10 @@ import '../../domain/entities/movie_entity.dart';
 sealed class MovieMapper {
   static MovieEntity fromMap(Map<String, dynamic> map) {
     return MovieEntity(
+      genres: AppMapper.parse(
+        'genre_ids',
+        () => List<String>.from(map['genre_ids'] as List),
+      ),
       id: AppMapper.parse(
         'id',
         () => map['id'] as int,
